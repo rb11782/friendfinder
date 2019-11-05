@@ -1,2 +1,8 @@
+<% @friends.each do |friend| %>
+  <div>
+    <h1><%= friend.name %></h1><br />
+    <i><%= friend.address %></i><br />
+  </div>
 
-<h1>Welcome to My Friend Finder Web Application!</h1>
+  <hr />
+<% end %>
