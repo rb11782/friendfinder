@@ -74,6 +74,11 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end
 
+gem 'kaminari'
+
+gem 'simple_form'
+
+gem "font-awesome-rails"
 
 
 

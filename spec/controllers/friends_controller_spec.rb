@@ -16,4 +16,15 @@ RSpec.describe FriendsController, type: :controller do
   end
 
 
+  describe "friends#create action" do
+    it "should successfully create a new friend in our database" do
+      post :create, params: { friend: { name: 'John', address: '21 Saturn Court, Sudbury, Ontario P3E 6B8' } }
+      expect(response).to redirect_to root_path
+
+      friend = Friend.last
+      expect(friend.name).to eq('John')
+      expect(friend.address).to eq('21 Saturn Court, Sudbury, Ontario P3E 6B8')
+    end
+  end
+
 end
