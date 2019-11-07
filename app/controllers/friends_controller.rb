@@ -14,6 +14,10 @@ class FriendsController < ApplicationController
      redirect_to root_path
   end
 
+  def show
+    @friend = Friend.find(params[:id])
+  end
+
   private
 
   def friend_params
