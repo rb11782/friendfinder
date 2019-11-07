@@ -1,5 +1,5 @@
 class FriendsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
 
   def index
     @friends = Friend.all
@@ -12,6 +12,16 @@ class FriendsController < ApplicationController
   def create
      current_user.friends.create(friend_params)
      redirect_to root_path
+  end
+
+  def edit
+    @friend = Friend.find(params[:id])
+  end
+
+  def update
+    @friend = Friend.find(params[:id])
+    @friend.update_attributes(friend_params)
+    redirect_to root_path
   end
 
   def show

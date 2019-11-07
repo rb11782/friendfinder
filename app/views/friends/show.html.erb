@@ -1,4 +1,7 @@
 <div class="booyah-box col-10 offset-1">
 <h1><%= @friend.name %></h1>
 <i><%= @friend.address %></i>
+  <div class="float-right">
+    <%= link_to 'Edit', edit_friend_path(@friend), class: 'btn btn-primary' %>
+  </div>
 </div>
