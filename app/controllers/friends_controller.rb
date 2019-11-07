@@ -9,6 +9,10 @@ class FriendsController < ApplicationController
     @friend = Friend.new
   end
 
+  def show
+    @friend = Friend.find(params[:id])
+  end
+
   def create
      current_user.friends.create(friend_params)
      redirect_to root_path
@@ -24,9 +28,13 @@ class FriendsController < ApplicationController
     redirect_to root_path
   end
 
-  def show
+  def destroy
     @friend = Friend.find(params[:id])
+    @friend.destroy
+    redirect_to root_path
   end
+
+  
 
   private
 
