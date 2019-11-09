@@ -6,4 +6,11 @@ FactoryBot.define do
     password { "secretPassword" }
     password_confirmation { "secretPassword" }
   end
+
+  factory :friend do
+    name {"Jane"}
+    address {" "}
+    association :user
+  end
+
 end

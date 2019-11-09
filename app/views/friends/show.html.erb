@@ -2,7 +2,9 @@
 <h1><%= @friend.name %></h1>
 <i><%= @friend.address %></i>
   <div class="float-right">
+    <% if current_user && current_user == @friend.user %>
     <%= link_to 'Edit', edit_friend_path(@friend), class: 'btn btn-primary' %>
+     <% end %>
     <%= link_to 'Destroy', friend_path(@friend), method: :delete, data: {confirm: 'Are you sure you want to delete this?'},class: 'btn btn-danger' %>
   </div>
 </div>

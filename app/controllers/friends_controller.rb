@@ -1,5 +1,5 @@
 class FriendsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
     @friends = Friend.all
@@ -10,26 +10,46 @@ class FriendsController < ApplicationController
   end
 
   def show
-    @friend = Friend.find(params[:id])
+    @friend = Friend.find_by_id(params[:id])
+    return render_not_found if @friend.blank?
   end
 
   def create
-     current_user.friends.create(friend_params)
-     redirect_to root_path
+    @friend = current_user.friends.create(friend_params)
+    if @friend.valid?
+      redirect_to root_path
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
     @friend = Friend.find(params[:id])
+    return render_not_found if @friend.blank?
+    if @friend.user != current_user
+    return render plain: 'Not Allowed', status: :forbidden
+    end
   end
 
   def update
-    @friend = Friend.find(params[:id])
+    @friend = Friend.find_by_id(params[:id])
+     return render_not_found if @friend.blank?
+     if @place.user != current_user
+      return render plain: 'Not Allowed', status: :forbidden
+      end
     @friend.update_attributes(friend_params)
+    if @friend.valid?
     redirect_to root_path
+    else
+      return render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @friend = Friend.find(params[:id])
+    @friend = Friend.find_by_id(params[:id])
+    if @friend.user != current_user
+    return render plain: 'Not Allowed', status: :forbidden
+    end
     @friend.destroy
     redirect_to root_path
   end
@@ -40,6 +60,10 @@ class FriendsController < ApplicationController
 
   def friend_params
     params.require(:friend).permit(:name, :address)
+  end
+
+  def render_not_found
+    render plain: 'Not Found :(', status: :not_found
   end
 
 end

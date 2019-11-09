@@ -1,6 +1,61 @@
 require 'rails_helper'
 
 RSpec.describe FriendsController, type: :controller do
+  describe "friends#update action" do
+    it "should allow users to successfully update friends" do
+      friend = FactoryBot.create(:friend, name: "Jane", address: "21 Saturn")
+      patch :update, params: { id: friend.id, friend: { name: 'John', address: "22 Saturn" } }
+      expect(response).to redirect_to root_path
+      friend.reload
+      expect(friend.name).to eq "John"
+      expect(friend.address).to eq "22 Saturn"
+    end
+
+    it "should have http 404 error if the friend cannot be found" do
+      patch :update, params: { id: "YOLOSWAG", friend: { name: 'John', address: "22 Saturn" } }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "should render the edit form with an http status of unprocessable_entity" do
+      friend = FactoryBot.create(:friend, name: "Jane", address: "21 Saturn")
+      patch :update, params: { id: friend.id, friend: { name: 'John', address: "22 Saturn" } }
+      expect(response).to have_http_status(:unprocessable_entity)
+      friend.reload
+      expect(friend.name).to eq "Jane"
+      expect(friend.address).to eq "21 Saturn"
+    end
+  end
+  
+  describe "friends#edit action" do
+    it "should successfully show the edit form if the friend is found" do
+      friend = FactoryBot.create(:friend)
+      get :show, params: { id: friend.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should return a 404 error message if the friend is not found" do
+      get :show, params: { id: 'SWAG' }
+      expect(response).to have_http_status(:not_found)
+
+    end
+  end
+
+  describe "friends#show action" do
+    it "should successfully show the page if the friend is found" do
+      friend = FactoryBot.create(:friend)
+      get :show, params: { id: friend.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should return a 404 error if the friend is not found" do
+      get :show, params: { id: 'TACOCAT' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+
+
+
   describe "friends#index action" do
     it "should successfully show the page" do
       get :index
