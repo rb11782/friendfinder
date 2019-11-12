@@ -1,6 +1,41 @@
 <div class="booyah-box col-10 offset-1">
 <h1><%= @friend.name %></h1>
 <i><%= @friend.address %></i>
+
+
+</head>
+<body>
+<div id="map"></div>
+
+<% if @friend.latitude.present? && @friend.longitude.present? %>
+
+<script>
+
+    function initMap() {
+      var myLatLng = {lat: <%= @friend.latitude %>, lng: <%= @friend.longitude %>};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: myLatLng
+      });
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: 'Hello World!'
+      });
+    }
+  </script>
+
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GEOCODER_API_KEY']%>&callback=initMap">
+  </script>
+
+  <div id="map"></div>
+  <% end %>
+
+  <br />
+
   <div class="float-right">
     <% if current_user && current_user == @friend.user %>
     <%= link_to 'Edit', edit_friend_path(@friend), class: 'btn btn-primary' %>
