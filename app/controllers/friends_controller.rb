@@ -34,7 +34,7 @@ class FriendsController < ApplicationController
   def update
     @friend = Friend.find_by_id(params[:id])
      return render_not_found if @friend.blank?
-     if @place.user != current_user
+     if @friend.user != current_user
       return render plain: 'Not Allowed', status: :forbidden
       end
     @friend.update_attributes(friend_params)
@@ -47,9 +47,10 @@ class FriendsController < ApplicationController
 
   def destroy
     @friend = Friend.find_by_id(params[:id])
-    if @friend.user != current_user
+     if @friend.user != current_user
     return render plain: 'Not Allowed', status: :forbidden
     end
+    return render_not_found if @friend.blank?
     @friend.destroy
     redirect_to root_path
   end

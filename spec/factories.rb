@@ -9,7 +9,7 @@ FactoryBot.define do
 
   factory :friend do
     name {"Jane"}
-    address {" "}
+    address {"21 Saturn Court"}
     association :user
   end
 
