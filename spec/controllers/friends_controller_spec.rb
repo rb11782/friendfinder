@@ -5,6 +5,7 @@ RSpec.describe FriendsController, type: :controller do
   describe "friends#destroy action" do
     it "should allow a user to destroy friends" do
     friend = FactoryBot.create(:friend)
+    sign_in friend.user
     delete :destroy, params: { id: friend.id }
     expect(response).to redirect_to root_path
     friend = Friend.find_by_id(friend.id)
@@ -25,6 +26,7 @@ RSpec.describe FriendsController, type: :controller do
     
     it "should allow users to successfully update friends" do
       friend = FactoryBot.create(:friend, name: "Jane", address: "21 Saturn")
+      sign_in friend.user
       patch :update, params: { id: friend.id, friend: { name: 'John', address: "22 Saturn" } }
       expect(response).to redirect_to root_path
       friend.reload

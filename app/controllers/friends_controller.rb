@@ -2,8 +2,9 @@ class FriendsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
-    @friends = Friend.page(params[:page]).per(3)
+    @friends = Friend.order(:name).page(params[:page]).per(3)
   end
+
 
   def new
     @friend = Friend.new
